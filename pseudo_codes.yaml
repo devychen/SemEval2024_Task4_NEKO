@@ -1,0 +1,105 @@
+TASK 4: MACHINE UNLEARNING
+Instead of retraining the model, 
+just remove specific info while preserve the rest.
+
+=====================:
+=== TASK OVERVIEW ===:
+
+Key point:
+How well we could remove the Forget set, 
+while maintaining accuracy on the Retain set.
+Maintain the general performance of the model.
+
+Three sub-tasks: 
+    - creative documents
+    - PII-containing biographies
+    - real-world training data
+
+Evaluation criteria:
+- Sentence completion
+- Question-answering tests
+
+===============:
+=== OVERALL ===:
+
+1. Algorithms: Dual-objective optimization.
+    - Gradient Ascent for forgetting
+    - KL Divergence for rentention
+2. Model: 1B model not 7B model.
+3. Steps:
+- Loads & tokenizes data
+- Uses GA loss to forget targeted knowledge
+- Uses KL loss to retain general knowledge
+- Optimizes model through iterative training
+- Saves the updated model
+
+
+====================:
+=== PSEUDO-CODES ===:
+
+SET SEED for reproducibility  
+IMPORT required libraries (Torch, Transformers, Data Handling, Logging)  
+
+DEFINE `create_dataloader_from_parquet`:
+    - Load dataset from Parquet  
+    - Format text as QA or text generation
+        - QA pairs: `### Question: ... ### Answer: ....`
+        - Text generation: ` ### Text: ....`
+    - Tokenize and prepare DataLoader  
+    - RETURN DataLoader  
+
+DEFINE `ga_loss`:
+    - Compute negative cross-entropy on answer section  
+    - Apply weight mask to focus on the answer  
+    - RETURN loss 
+
+DEFINE `compute_kl`:
+    - Get predictions from pretrained and current models  
+    - Compute KL divergence loss (to retain general knowledge)  
+    - RETURN loss   
+
+SET hyperparameters (steps, weights, batch size, learning rate, logging)  
+
+DEFINE `unlearn`:
+    - Load tokenizer and models (pretrained + current)  
+    - Prepare retain and forget DataLoaders  
+    - Initialize optimizer and learning rate scheduler  
+    - LOOP for MAX_UNLEARN_STEPS:
+        - Compute `ga_loss` (forget target knowledge)  
+        - Compute `compute_kl` (retain general knowledge)  
+        - Compute total loss and update model:
+            - LOSS = (BAD_WEIGHT * bad_loss) + (NORMAL_WEIGHT * normal_loss)  
+        - Log training progress  
+    - Save modified model  
+
+IF script is run as main:
+    - Parse arguments (input model, datasets, output path)  
+    - CALL `unlearn` with provided paths  
+
+
+================:
+===CHALLENGES===:
+
+Challenges:
+
+- GPU constraints, training distribution
+- Cluster queueing
+
+
+Ranks & Results:
+- Ranking: #15 out of 24.
+- Evaluation:
+    - MMLU Score: '0.229' 
+                (< 0.371 threshold, 
+                but included just for completeness not for filtering)
+    - MIA Score: '0.824' (effectively forgetted)
+    - Task Aggregate Score: '0.0' (poor task performance)
+    - Final Score: '0.351' (used for ranking)
+
+Future:
+- 7B model (need other cluster)
+- Recommended algorithms: Gradient difference, Negative Preference Optimisation.
+
+"Gradient Ascent and KL Minimization were discarded 
+since they severely degrade model utility 
+(MMLU drops below predetermined threshold of 0.371)."
