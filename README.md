@@ -1,8 +1,8 @@
 # Machine Unlearning
 
 SemEval 2025 [Homepage](https://semeval.github.io/SemEval2025/tasks) <br>
-[Task 4](https://llmunlearningsemeval2025.github.io/) Machine Unlearning <br>
-[Course page](https://github.com/cicl-iscl/cicl2024)
+[Task 4 Information](https://llmunlearningsemeval2025.github.io/) Machine Unlearning <br>
+[Challenges in CL, Course page](https://github.com/cicl-iscl/cicl2024)
 
 ### Team member: Chi Kuan Lai, Yifei Chen <br>
 
