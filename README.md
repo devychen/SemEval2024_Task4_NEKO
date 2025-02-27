@@ -7,7 +7,7 @@ SemEval 2025 [Homepage](https://semeval.github.io/SemEval2025/tasks) <br>
 ### Team member: Chi Kuan Lai, Yifei Chen <br>
 
 
-### Initial idea
+### Methods
 ### 1. Perform Gradient Ascent on forgetting set
 Gradient Ascent: to maximize a function
 - We negate the loss, changing the model's update direction to "increase loss".
@@ -18,5 +18,9 @@ By continuously performing gradient ascent on this data, we can gradually reduce
 The Kullback-Leibler Divergence score: quantifies how much one probability distribution differs from another probability distribution.
 -  used to measure the prediction differences between the current model and the pre-trained model on normal samples, thereby ensuring that the model does not deviate from learning normal samples during the "unlearning" process.
 
+### Quick Acess
+1. [Data sets](https://github.com/devychen/SemEval2025_Task4_NEKO/tree/main/Data%20sets)
+2. [Final code (.py)](https://github.com/devychen/SemEval2025_Task4_NEKO/blob/main/unlearning_final.py)
+3. [Pseudo code](https://github.com/devychen/SemEval2025_Task4_NEKO/blob/main/pseudo_codes.yaml)
 
 
